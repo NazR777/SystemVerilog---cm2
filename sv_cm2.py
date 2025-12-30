@@ -189,60 +189,73 @@ class always_relay_on:
             scene_connections.append(scene_connection(f"d_ff_2node{d_ff.index}", output_block.world_name))
 
 and_gate_count = 0
-def and_gate(input1, input2, output, position: list[int]) -> None:
+def and_gate(input1, input2, position: list[int]):
     global scene_connections, scene_blocks, and_gate_count
 
     gate = block(1, position[0], position[1], position[2], [], f"and_gate{and_gate_count}")
     gate.add_to_blocks()
     scene_connections.append(scene_connection(input1, gate.world_name))
     scene_connections.append(scene_connection(input2, gate.world_name))
-    scene_connections.append(scene_connection(gate.world_name, output))
     and_gate_count += 1
 
+    return gate
+
 not_gate_count = 0
-def not_gate(input, output, position: list[int]) -> None:
+def not_gate(input, position: list[int]):
     global scene_connections, scene_blocks, not_gate_count
 
     gate = block(0, position[0], position[1], position[2], [], f"not_gate{not_gate_count}")
     gate.add_to_blocks()
     scene_connections.append(scene_connection(input, gate.world_name))
-    scene_connections.append(scene_connection(gate.world_name, output))
     not_gate_count += 1
 
+    return gate
+
 or_gate_count = 0
-def or_gate(input1, input2, output, position: list[int]) -> None:
+def or_gate(input1, input2, position: list[int]):
     global scene_connections, scene_blocks, or_gate_count
 
     gate = block(2, position[0], position[1], position[2], [], f"or_gate{or_gate_count}")
     gate.add_to_blocks()
     scene_connections.append(scene_connection(input1, gate.world_name))
     scene_connections.append(scene_connection(input2, gate.world_name))
-    scene_connections.append(scene_connection(gate.world_name, output))
     or_gate_count += 1
 
+    return gate
+
 xor_gate_count = 0
-def xor_gate(input1, input2, output, position: list[int]) -> None:
+def xor_gate(input1, input2, position: list[int]):
     global scene_connections, scene_blocks, xor_gate_count
 
     gate = block(3, position[0], position[1], position[2], [], f"xor_gate{xor_gate_count}")
     gate.add_to_blocks()
     scene_connections.append(scene_connection(input1, gate.world_name))
     scene_connections.append(scene_connection(input2, gate.world_name))
-    scene_connections.append(scene_connection(gate.world_name, output))
     xor_gate_count += 1
 
+    return gate
+
 nor_gate_count = 0
-def nor_gate(input1, input2, output, position: list[int]) -> None:
+def nor_gate(input1, input2, position: list[int]):
     global scene_connections, scene_blocks, nor_gate_count
 
     gate = block(0, position[0], position[1], position[2], [], f"nor_gate{nor_gate_count}")
     gate.add_to_blocks()
     scene_connections.append(scene_connection(input1, gate.world_name))
     scene_connections.append(scene_connection(input2, gate.world_name))
-    scene_connections.append(scene_connection(gate.world_name, output))
     nor_gate_count += 1
 
+    return gate
 
+class module:
+    def __init__(self, inputs: list, outputs: list, base: str):
+        self.inputs = inputs
+        self.outputs = outputs
+        self.base = base
+    def get_input(self, world_name):
+        return [inpt for inpt in self.inputs if inpt.world_name == world_name][0]
+    def get_output(self, world_name):
+        return [outpt for outpt in self.outputs if outpt.world_name == world_name][0]
 
 build_scene()
 print(f"Took {(end_time - start_time):.2f}s")
