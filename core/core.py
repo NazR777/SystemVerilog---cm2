@@ -297,12 +297,4 @@ def ripple_adder(start_pos: list[int], width: int):
 
     return [b for b in blocks if (b.world_name.startswith("r_adder_A_") or b.world_name.startswith("r_adder_B_") or b.world_name.startswith("r_adder_C_"))]
 
-a = block(5, 0, 0, 0, [0,0], "a")
-b = block(5, 2, 0, 0, [0,0], "b")
-c = block(5, 4, 0, 0, [0,0], "c")
-d = block(5, 6, 0, 0, [0,0], "d")
-or_gate(and_gate(a.world_name, b.world_name, [1, 0, 1]).world_name, and_gate(c.world_name, d.world_name, [5, 0, 1]).world_name, [3, 0, 2])
-
-
-
 build_scene()
